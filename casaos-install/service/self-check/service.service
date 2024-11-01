@@ -1,0 +1,14 @@
+[Unit]
+Description=Self Check Service
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/self-check.sh
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/pts/0
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

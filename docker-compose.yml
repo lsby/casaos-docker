@@ -1,0 +1,24 @@
+services:
+
+  casaos:
+    container_name: casaos
+    build:
+      context: .
+      dockerfile: dockerfile
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup                # 必须: 挂载 cgroup, 用以在容器中使用 systemd
+      - ./data:/DATA                                 # 可选: 将 DATA 目录映射到外部, 以便持久化
+      # - ./casaos-db:/var/lib/casaos/db               # 可选: 将 casaos 数据目录映射到外部, 以便持久化, todo: 似乎有问题
+      # - ./docker:/var/lib/docker                     # 可选: 将 Docker 数据映射到外部, 以便持久化, todo: 似乎有问题
+      # - /var/run/docker.sock:/var/run/docker.sock    # 另一种方法: 直接使用宿主机的 Docker 引擎
+    # network_mode: host
+    ports:
+      - "9080:80"
+      - "9081:81"
+      - "9082:82"
+      - "9083:83"
+      - "9084:84"
+      - "9085:85"
+    tty: true                                        # 分配伪终端
+    restart: always
