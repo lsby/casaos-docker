@@ -5,7 +5,7 @@
 # 这个文件按这些配置文件定义的启动关系, 按顺序启动了这些服务
 
 echo "启动 docker..."
-dockerd &
+dockerd > "/var/log/docker.log" 2>&1 &
 
 echo "启动 rclone..."
 /usr/bin/mkdir -p /var/run/rclone  && /usr/bin/rm -f /var/run/rclone/rclone.sock && /usr/bin/rclone rcd --rc-addr unix:///var/run/rclone/rclone.sock --rc-no-auth --rc-allow-origin "*" &
@@ -23,6 +23,7 @@ LOG_PATH="/var/log/$NAME.log"
 rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
+    echo "============================"
     echo "等待 $NAME 启动"
     echo "目前日志文件的最后一行是:"
     tail -n 1 $LOG_PATH
@@ -34,6 +35,7 @@ LOG_PATH="/var/log/$NAME.log"
 rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/message-bus.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
+    echo "============================"
     echo "等待 $NAME 启动"
     echo "目前日志文件的最后一行是:"
     tail -n 1 $LOG_PATH
@@ -45,6 +47,7 @@ LOG_PATH="/var/log/$NAME.log"
 rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/user-service.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
+    echo "============================"
     echo "等待 $NAME 启动"
     echo "目前日志文件的最后一行是:"
     tail -n 1 $LOG_PATH
@@ -56,6 +59,7 @@ LOG_PATH="/var/log/$NAME.log"
 rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/app-management.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
+    echo "============================"
     echo "等待 $NAME 启动"
     echo "目前日志文件的最后一行是:"
     tail -n 1 $LOG_PATH
@@ -67,6 +71,7 @@ LOG_PATH="/var/log/$NAME.log"
 rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/casaos.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
+    echo "============================"
     echo "等待 $NAME 启动"
     echo "目前日志文件的最后一行是:"
     tail -n 1 $LOG_PATH
@@ -78,6 +83,7 @@ LOG_PATH="/var/log/$NAME.log"
 rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/local-storage.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
+    echo "============================"
     echo "等待 $NAME 启动"
     echo "目前日志文件的最后一行是:"
     tail -n 1 $LOG_PATH
@@ -87,6 +93,7 @@ done
 echo "所有服务均已启动!"
 
 tail -f \
+    /var/log/docker.log \
     /var/log/casaos-gateway.log \
     /var/log/casaos-message-bus.log \
     /var/log/casaos-user-service.log \
