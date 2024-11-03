@@ -84,18 +84,6 @@ while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
     sleep 1
 done
 
-echo "Running self-check..."
-
-CASA_SERVICES=(
-    "casaos-gateway.service"
-    "casaos-message-bus.service"
-    "casaos-user-service.service"
-    "casaos-local-storage.service"
-    "casaos-app-management.service"
-    "rclone.service"
-    "casaos.service"
-)
-
 echo "所有服务均已启动!"
 
 tail -f \
