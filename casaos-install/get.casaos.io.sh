@@ -18,6 +18,14 @@
 #   This only work on  Linux systems. Please
 #   open an issue if you notice any bugs.
 #
+
+# 这个文件基于 https://get.casaos.io (2024年11月1日) 的版本进行了修改, 原始文件是 bak/get.casaos.io.sh
+# 主要修改:
+# - 去除了调用 systemctl 的部分
+# - 去除了验证 docker 服务存在的部分
+# - 去除了从网站下载 casaos 相关包的逻辑, 使用本地包
+# by hbybyyang
+
 clear
 echo -e "\e[0m\c"
 
@@ -778,10 +786,3 @@ DownloadAndInstallCasaOS
 # 修改: rclone 调用的命令位置不一样, 做一个链接
 ln -s /bin/mkdir /usr/bin/mkdir
 ln -s /bin/rm /usr/bin/rm
-
-# 修改: 手动设置相关服务的开机启动
-TARGET_DIR="/etc/systemd/system/multi-user.target.wants"
-for service in /usr/lib/systemd/system/*.service; do
-    service_name=$(basename "$service")
-    sudo ln -sf "$service" "/etc/systemd/system/multi-user.target.wants/$service_name"
-done
