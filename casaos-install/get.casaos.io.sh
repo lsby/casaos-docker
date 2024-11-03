@@ -558,7 +558,7 @@ Configuration_Addons() {
 
         # Add and start Devmon service
         GreyStart
-        # 修改: 阻止 systemctl 执行, 在最后我们会手动创建启动服务链接
+        # 修改: 阻止 systemctl 执行
         # ${sudo_cmd} systemctl enable devmon@devmon
         # ${sudo_cmd} systemctl start devmon@devmon
         ColorReset
@@ -585,16 +585,19 @@ DownloadAndInstallCasaOS() {
         #     ColorReset
         # done
 
+        # 修改: 这里只需要解压当前平台的包, 和标注为all的包
         for PACKAGE_FILE in linux-*.tar.gz; do
-            Show 2 "Extracting ${PACKAGE_FILE}..."
-            GreyStart
-            ${sudo_cmd} tar zxf "${PACKAGE_FILE}" || Show 1 "Failed to extract package"
-            ColorReset
+            if [[ "$PACKAGE_FILE" == linux-$TARGET_ARCH-*.tar.gz || "$PACKAGE_FILE" == linux-all-*.tar.gz ]]; then
+                Show 2 "Extracting ${PACKAGE_FILE}..."
+                GreyStart
+                ${sudo_cmd} tar zxf "${PACKAGE_FILE}" || Show 1 "Failed to extract package"
+                ColorReset
+            fi
         done
 
         BUILD_DIR=$(${sudo_cmd} realpath -e "${TMP_DIR}"/build || Show 1 "Failed to find build directory")
 
-        # 修改: 阻止安装脚本中的 systemctl 执行, 在最后我们会手动创建启动服务链接
+        # 修改: 阻止安装脚本中的 systemctl 执行
         find $BUILD_DIR -type f -name "*.sh" -exec sed -i '/^systemctl/s/^/#/' {} +
 
         popd

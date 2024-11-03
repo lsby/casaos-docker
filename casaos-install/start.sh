@@ -24,6 +24,8 @@ rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
     echo "等待 $NAME 启动"
+    echo "目前日志文件的最后一行是:"
+    tail -n 1 $LOG_PATH
     sleep 1
 done
 
@@ -33,6 +35,8 @@ rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/message-bus.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
     echo "等待 $NAME 启动"
+    echo "目前日志文件的最后一行是:"
+    tail -n 1 $LOG_PATH
     sleep 1
 done
 
@@ -42,6 +46,8 @@ rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/user-service.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
     echo "等待 $NAME 启动"
+    echo "目前日志文件的最后一行是:"
+    tail -n 1 $LOG_PATH
     sleep 1
 done
 
@@ -51,6 +57,8 @@ rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/app-management.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
     echo "等待 $NAME 启动"
+    echo "目前日志文件的最后一行是:"
+    tail -n 1 $LOG_PATH
     sleep 1
 done
 
@@ -60,6 +68,8 @@ rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/casaos.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
     echo "等待 $NAME 启动"
+    echo "目前日志文件的最后一行是:"
+    tail -n 1 $LOG_PATH
     sleep 1
 done
 
@@ -69,6 +79,8 @@ rm -rf $LOG_PATH && echo "" > $LOG_PATH
 /usr/bin/"$NAME" -c /etc/casaos/local-storage.conf > "$LOG_PATH" 2>&1 &
 while ! grep -q "$SEARCH_STRING" "$LOG_PATH"; do
     echo "等待 $NAME 启动"
+    echo "目前日志文件的最后一行是:"
+    tail -n 1 $LOG_PATH
     sleep 1
 done
 
